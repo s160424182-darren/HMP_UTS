@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Dashboard</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Ringkasan Hari Ini</ion-card-subtitle>
+      <ion-card-title>Total Produk</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <h1 class="ion-text-center">{{ totalProducts }}</h1>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Aktivitas</ion-card-subtitle>
+      <ion-card-title>Total Transaksi</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <h1 class="ion-text-center">{{ totalTransactionsToday }}</h1>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Statistik</ion-card-subtitle>
+      <ion-card-title>Produk Terlaris</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <h2 class="ion-text-center">{{ bestSellerName }}</h2>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
