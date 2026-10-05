@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/produk"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Detail Produk</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div *ngIf="product; else notFound" class="ion-text-center">
+    <img [src]="product.image ? product.image : 'https://ionicframework.com/docs/img/demos/thumbnail.svg'" alt="product image" style="max-width: 200px; margin-bottom: 20px;">
+    <h2>{{ product.name }}</h2>
+    <p>Kategori: {{ product.category }}</p>
+    
+    <ion-card>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-label>Sisa Stok</ion-label>
+            <ion-note slot="end" color="primary">{{ product.stock }}</ion-note>
+          </ion-item>
+          <ion-item>
+            <ion-label>Harga Beli</ion-label>
+            <ion-note slot="end">Rp{{ product.buyPrice }}</ion-note>
+          </ion-item>
+          <ion-item>
+            <ion-label>Harga Jual</ion-label>
+            <ion-note slot="end" color="success">Rp{{ product.sellPrice }}</ion-note>
+          </ion-item>
+          <ion-item>
+            <ion-label>Potensi Untung per Item</ion-label>
+            <ion-note slot="end" color="secondary">Rp{{ product.sellPrice - product.buyPrice }}</ion-note>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+  </div>
+  <ng-template #notFound>
+    <p class="ion-text-center">Produk tidak ditemukan.</p>
+  </ng-template>
+</ion-content>

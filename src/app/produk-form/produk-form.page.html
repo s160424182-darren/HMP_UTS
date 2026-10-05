@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/produk"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Tambah Produk</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="productForm" (ngSubmit)="saveProduct()">
+    <ion-item>
+      <ion-input label="Nama Produk" labelPlacement="floating" type="text" formControlName="name"></ion-input>
+    </ion-item>
+    <ion-note *ngIf="f['name'].invalid && (f['name'].dirty || f['name'].touched)" color="danger">
+      Nama produk wajib diisi
+    </ion-note>
+
+    <ion-item>
+      <ion-input label="Kategori" labelPlacement="floating" type="text" formControlName="category"></ion-input>
+    </ion-item>
+    <ion-note *ngIf="f['category'].invalid && (f['category'].dirty || f['category'].touched)" color="danger">
+      Kategori wajib diisi
+    </ion-note>
+
+    <ion-item>
+      <ion-input label="Stok" labelPlacement="floating" type="number" formControlName="stock"></ion-input>
+    </ion-item>
+    <ion-note *ngIf="f['stock'].invalid && (f['stock'].dirty || f['stock'].touched)" color="danger">
+      <span *ngIf="f['stock'].errors?.['required']">Stok wajib diisi. </span>
+      <span *ngIf="f['stock'].errors?.['min']">Stok tidak boleh negatif.</span>
+    </ion-note>
+
+    <ion-item>
+      <ion-input label="Harga Beli" labelPlacement="floating" type="number" formControlName="buyPrice"></ion-input>
+    </ion-item>
+    <ion-note *ngIf="f['buyPrice'].invalid && (f['buyPrice'].dirty || f['buyPrice'].touched)" color="danger">
+      Harga beli harus lebih dari 0
+    </ion-note>
+
+    <ion-item>
+      <ion-input label="Harga Jual" labelPlacement="floating" type="number" formControlName="sellPrice"></ion-input>
+    </ion-item>
+    <ion-note *ngIf="f['sellPrice'].invalid && (f['sellPrice'].dirty || f['sellPrice'].touched)" color="danger">
+      Harga jual harus lebih dari 0
+    </ion-note>
+
+    <ion-button expand="block" type="submit" [disabled]="productForm.invalid" class="ion-margin-top" color="secondary">
+      Simpan Produk
+    </ion-button>
+  </form>
+</ion-content>

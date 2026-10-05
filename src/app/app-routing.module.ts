@@ -10,7 +10,33 @@ const routes: Routes = [
   {
     path: 'dashboard',
     loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardPageModule)
-  }
+  },
+  {
+    path: 'produk',
+    loadChildren: () => import('./produk/produk.module').then(m => m.ProdukPageModule)
+  },
+  {
+    path: 'produk-detail',
+    loadChildren: () => import('./produk-detail/produk-detail.module').then(m => m.ProdukDetailPageModule)
+  },
+  {
+    path: 'produk-form',
+    loadChildren: () => import('./produk-form/produk-form.module').then(m => m.ProdukFormPageModule)
+  }, 
+  { 
+    path: 'produk', 
+    loadChildren: () => import('./produk/produk.module').then(m => m.ProdukPageModule)
+  },
+  { 
+    path: 'produk-detail/:id',
+    loadChildren: () => import('./produk-detail/produk-detail.module').then(m => m.ProdukDetailPageModule)
+  },
+  {
+    path: 'produk-form', 
+    loadChildren: () => import('./produk-form/produk-form.module').then(m => m.ProdukFormPageModule)
+  },
+
+
 ];
 
 @NgModule({
