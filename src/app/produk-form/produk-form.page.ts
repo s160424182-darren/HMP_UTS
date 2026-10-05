@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ProductService } from '../services/product.service';
-import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-produk-form',
@@ -12,12 +11,14 @@ import { ToastController } from '@ionic/angular';
 })
 export class ProdukFormPage implements OnInit {
   productForm!: FormGroup;
+  showAlert: boolean = false;
+  alertMessage: string = '';
+  alertButtons = ['OK'];
 
   constructor(
     private fb: FormBuilder,
     private productService: ProductService,
     private router: Router,
-    private toastController: ToastController
   ) { }
 
   ngOnInit() {
@@ -30,7 +31,7 @@ export class ProdukFormPage implements OnInit {
     });
   }
 
-  async saveProduct() {
+  saveProduct() {
     if (this.productForm.valid) {
       const newProduct = {
         id: new Date().getTime().toString(),
@@ -38,16 +39,13 @@ export class ProdukFormPage implements OnInit {
         image: ''
       };
       this.productService.addProduct(newProduct);
-      
-      const toast = await this.toastController.create({
-        message: 'Produk berhasil ditambahkan',
-        duration: 2000,
-        color: 'success'
-      });
-      toast.present();
-      
-      this.router.navigate(['/produk']);
+
+      this.alertMessage = 'Produk berhasil ditambahkan';
     }
+  }
+  onAlertDismiss() {
+    this.showAlert = false;
+    this.router.navigate(['/produk']);
   }
 
   get f() {

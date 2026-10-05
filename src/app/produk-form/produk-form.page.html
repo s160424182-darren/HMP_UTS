@@ -49,4 +49,7 @@
       Simpan Produk
     </ion-button>
   </form>
+  <ion-alert [isOpen]="showAlert" header="Sukses" [message]="alertMessage" [buttons]="alertButtons"
+    (didDismiss)="onAlertDismiss()">
+  </ion-alert>
 </ion-content>

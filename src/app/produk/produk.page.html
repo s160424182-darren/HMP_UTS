@@ -36,4 +36,7 @@
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
+  <ion-alert [isOpen]="showAlert" header="Keranjang" [message]="alertMessage" [buttons]="alertButtons"
+    (didDismiss)="showAlert = false">
+  </ion-alert>
 </ion-content>
