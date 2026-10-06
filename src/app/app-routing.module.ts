@@ -39,7 +39,10 @@ const routes: Routes = [
     path: 'keranjang',
     loadChildren: () => import('./keranjang/keranjang.module').then(m => m.KeranjangPageModule)
   },
-
+  { path: 'transaksi', loadChildren: () => import('./transaksi/transaksi.module').then(m => m.TransaksiPageModule) },
+  { path: 'profil', loadChildren: () => import('./profil/profil.module').then(m => m.ProfilPageModule) },
+  { path: 'pengaturan', loadChildren: () => import('./pengaturan/pengaturan.module').then(m => m.PengaturanPageModule) },
+  { path: 'tentang', loadChildren: () => import('./tentang/tentang.module').then(m => m.TentangPageModule) }
 
 ];
 
