@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/produk"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Keranjang</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div *ngIf="cartItems.length === 0" class="ion-text-center">
+    <p>Keranjang masih kosong.</p>
+    <ion-button routerLink="/produk" color="secondary">Belanja Sekarang</ion-button>
+  </div>
+
+  <ion-list *ngIf="cartItems.length > 0">
+    <ion-item-sliding *ngFor="let item of cartItems; let i = index">
+      <ion-item>
+        <ion-label>
+          <h2>{{ item.product.name }}</h2>
+          <p>{{ item.quantity }} x Rp{{ item.product.sellPrice }}</p>
+        </ion-label>
+        <ion-note slot="end">Rp{{ item.quantity * item.product.sellPrice }}</ion-note>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="removeItem(i)">Hapus</ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+  <ion-card *ngIf="cartItems.length > 0">
+    <ion-card-content>
+      <h2>Total Belanja: Rp{{ total }}</h2>
+      <ion-button expand="block" color="success" (click)="checkout()" class="ion-margin-top">
+        Konfirmasi Transaksi
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

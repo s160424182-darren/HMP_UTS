@@ -22,18 +22,22 @@ const routes: Routes = [
   {
     path: 'produk-form',
     loadChildren: () => import('./produk-form/produk-form.module').then(m => m.ProdukFormPageModule)
-  }, 
-  { 
-    path: 'produk', 
+  },
+  {
+    path: 'produk',
     loadChildren: () => import('./produk/produk.module').then(m => m.ProdukPageModule)
   },
-  { 
+  {
     path: 'produk-detail/:id',
     loadChildren: () => import('./produk-detail/produk-detail.module').then(m => m.ProdukDetailPageModule)
   },
   {
-    path: 'produk-form', 
+    path: 'produk-form',
     loadChildren: () => import('./produk-form/produk-form.module').then(m => m.ProdukFormPageModule)
+  },
+  {
+    path: 'keranjang',
+    loadChildren: () => import('./keranjang/keranjang.module').then(m => m.KeranjangPageModule)
   },
 
 
