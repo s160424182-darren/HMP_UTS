@@ -10,3 +10,12 @@ Pastikan telah menginstall [Node.js](https://nodejs.org/) dan [Ionic CLI](https:
 2. Buka Terminal atau Command Prompt, lalu arahkan ke dalam direktori proyek:
    ```bash
    cd SIMOBILE
+4. Install Depencency yang dibutuhkan:
+   ```bash
+   npm install
+
+## 🏃‍♂️ Cara Menjalankan Aplikasi
+
+Setelah proses instalasi selesai, Anda dapat menjalankan aplikasi secara lokal di browser dengan perintah berikut:
+  ```bash
+   ionic serve
