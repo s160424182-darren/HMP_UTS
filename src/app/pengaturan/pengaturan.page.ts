@@ -16,7 +16,8 @@ export class PengaturanPage implements OnInit {
   }
 
   toggleDarkMode(event: any) {
-    this.isDarkMode = event.detail.checked;
-    document.body.classList.toggle('dark', this.isDarkMode);
+     const isDark = event.detail.checked;
+     document.documentElement.classList.toggle('ion-palette-dark', isDark);
+    document.body.classList.toggle('dark', isDark);
   }
 }
