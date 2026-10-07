@@ -1,34 +1,47 @@
 import { Injectable } from '@angular/core';
-import { Product } from './product.service';
-
-export interface CartItem {
-  product: Product;
-  quantity: number;
-}
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
-  private cartItems: CartItem[] = [];
+  private cartItems: any[] = [];
 
   constructor() { }
 
-  getCart(): CartItem[] {
+  getCart() {
     return this.cartItems;
   }
 
-  addToCart(product: Product, quantity: number = 1) {
-    const existing = this.cartItems.find(item => item.product.id === product.id);
-    if (existing) {
-      existing.quantity += quantity;
-    } else {
-      this.cartItems.push({ product, quantity });
+  addToCart(product: any, quantity: number = 1) {
+    let found = false;
+    for (let i in this.cartItems) {
+      if (this.cartItems[i].product.id === product.id) {
+        this.cartItems[i].quantity += quantity;
+        found = true;
+      }
+    }
+    
+    if (!found) {
+      this.cartItems.push({ product: product, quantity: quantity });
     }
   }
 
   getTotal(): number {
-    return this.cartItems.reduce((acc, item) => acc + (item.product.sellPrice * item.quantity), 0);
+    let total = 0;
+    for (let i in this.cartItems) {
+      total += (this.cartItems[i].product.sellPrice * this.cartItems[i].quantity);
+    }
+    return total;
+  }
+
+  removeItem(index: number) {
+    let newArray = [];
+    for (let i = 0; i < this.cartItems.length; i++) {
+      if (i !== index) {
+        newArray.push(this.cartItems[i]);
+      }
+    }
+    this.cartItems = newArray;
   }
 
   clearCart() {

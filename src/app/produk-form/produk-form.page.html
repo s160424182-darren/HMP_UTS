@@ -1,55 +1,77 @@
-<ion-header>
+<ion-header [translucent]="true">
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/produk"></ion-back-button>
+      <ion-back-button defaultHref="/tabs/produk"></ion-back-button>
     </ion-buttons>
     <ion-title>Tambah Produk</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <form [formGroup]="productForm" (ngSubmit)="saveProduct()">
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <ion-list>
     <ion-item>
-      <ion-input label="Nama Produk" labelPlacement="floating" type="text" formControlName="name"></ion-input>
+      <ion-input label="Nama Produk" labelPlacement="stacked" placeholder="Masukkan nama produk" [(ngModel)]="new_name">
+      </ion-input>
     </ion-item>
-    <ion-note *ngIf="f['name'].invalid && (f['name'].dirty || f['name'].touched)" color="danger">
-      Nama produk wajib diisi
+    <ion-note *ngIf="errors['name']" color="danger" class="ion-padding-start">
+      {{ errors['name'] }}
     </ion-note>
 
     <ion-item>
-      <ion-input label="Kategori" labelPlacement="floating" type="text" formControlName="category"></ion-input>
+      <ion-input label="Kategori" labelPlacement="stacked" placeholder="Masukkan kategori" [(ngModel)]="new_category">
+      </ion-input>
     </ion-item>
-    <ion-note *ngIf="f['category'].invalid && (f['category'].dirty || f['category'].touched)" color="danger">
-      Kategori wajib diisi
+    <ion-note *ngIf="errors['category']" color="danger" class="ion-padding-start">
+      {{ errors['category'] }}
     </ion-note>
 
     <ion-item>
-      <ion-input label="Stok" labelPlacement="floating" type="number" formControlName="stock"></ion-input>
+      <ion-input type="number" label="Stok" labelPlacement="stacked" placeholder="Masukkan stok"
+        [(ngModel)]="new_stock">
+      </ion-input>
     </ion-item>
-    <ion-note *ngIf="f['stock'].invalid && (f['stock'].dirty || f['stock'].touched)" color="danger">
-      <span *ngIf="f['stock'].errors?.['required']">Stok wajib diisi. </span>
-      <span *ngIf="f['stock'].errors?.['min']">Stok tidak boleh negatif.</span>
+    <ion-note *ngIf="errors['stock']" color="danger" class="ion-padding-start">
+      {{ errors['stock'] }}
     </ion-note>
 
     <ion-item>
-      <ion-input label="Harga Beli" labelPlacement="floating" type="number" formControlName="buyPrice"></ion-input>
+      <ion-input type="number" label="Harga Beli" labelPlacement="stacked" placeholder="Masukkan harga beli"
+        [(ngModel)]="new_buyPrice">
+      </ion-input>
     </ion-item>
-    <ion-note *ngIf="f['buyPrice'].invalid && (f['buyPrice'].dirty || f['buyPrice'].touched)" color="danger">
-      Harga beli harus lebih dari 0
+    <ion-note *ngIf="errors['buyPrice']" color="danger" class="ion-padding-start">
+      {{ errors['buyPrice'] }}
     </ion-note>
 
     <ion-item>
-      <ion-input label="Harga Jual" labelPlacement="floating" type="number" formControlName="sellPrice"></ion-input>
+      <ion-input type="number" label="Harga Jual" labelPlacement="stacked" placeholder="Masukkan harga jual"
+        [(ngModel)]="new_sellPrice">
+      </ion-input>
     </ion-item>
-    <ion-note *ngIf="f['sellPrice'].invalid && (f['sellPrice'].dirty || f['sellPrice'].touched)" color="danger">
-      Harga jual harus lebih dari 0
+    <ion-note *ngIf="errors['sellPrice']" color="danger" class="ion-padding-start">
+      {{ errors['sellPrice'] }}
     </ion-note>
 
-    <ion-button expand="block" type="submit" [disabled]="productForm.invalid" class="ion-margin-top" color="secondary">
-      Simpan Produk
-    </ion-button>
-  </form>
+    <ion-item>
+      <ion-input type="url" label="Link Gambar (URL)" labelPlacement="stacked"
+        placeholder="https://example.com/gambar.jpg" [(ngModel)]="new_image">
+      </ion-input>
+    </ion-item>
+
+    <div *ngIf="new_image" class="ion-text-center ion-margin-top">
+      <p>Preview:</p>
+      <img [src]="new_image" alt="preview">
+    </div>
+    
+  </ion-list>
+
+  <ion-button expand="block" color="warning" class="ion-margin-top" (click)="saveProduct()">
+    SIMPAN PRODUK
+  </ion-button>
+
   <ion-alert [isOpen]="showAlert" header="Sukses" [message]="alertMessage" [buttons]="alertButtons"
     (didDismiss)="onAlertDismiss()">
   </ion-alert>
+
 </ion-content>

@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/tabs/produk"></ion-back-button>
+      <ion-back-button defaultHref="/produk"></ion-back-button>
     </ion-buttons>
     <ion-title>Keranjang</ion-title>
   </ion-toolbar>
@@ -10,7 +10,7 @@
 <ion-content class="ion-padding">
   <div *ngIf="cartItems.length === 0" class="ion-text-center">
     <p>Keranjang masih kosong.</p>
-    <ion-button routerLink="/produk" color="secondary">Belanja Sekarang</ion-button>
+    <a routerLink="/produk">Belanja Sekarang</a>
   </div>
 
   <ion-list *ngIf="cartItems.length > 0">
@@ -22,9 +22,13 @@
         </ion-label>
         <ion-note slot="end">Rp{{ item.quantity * item.product.sellPrice }}</ion-note>
       </ion-item>
+
       <ion-item-options side="end">
-        <ion-item-option color="danger" (click)="removeItem(i)">Hapus</ion-item-option>
+        <ion-item-option color="danger" (click)="removeItem(i)">
+          <ion-icon slot="icon-only" name="trash"></ion-icon>
+        </ion-item-option>
       </ion-item-options>
+
     </ion-item-sliding>
   </ion-list>
 
@@ -36,4 +40,7 @@
       </ion-button>
     </ion-card-content>
   </ion-card>
+
+  <ion-alert [isOpen]="isAlertOpen" header="Informasi" [message]="alertMessage" [buttons]="['OK']"
+    (didDismiss)="setOpen(false)"></ion-alert>
 </ion-content>

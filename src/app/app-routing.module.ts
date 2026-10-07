@@ -16,16 +16,20 @@ const routes: Routes = [
     loadChildren: () => import('./produk/produk.module').then(m => m.ProdukPageModule)
   },
   {
-    path: 'produk-detail',
-    loadChildren: () => import('./produk-detail/produk-detail.module').then(m => m.ProdukDetailPageModule)
+    path: 'transaksi',
+    loadChildren: () => import('./transaksi/transaksi.module').then(m => m.TransaksiPageModule)
   },
   {
-    path: 'produk-form',
-    loadChildren: () => import('./produk-form/produk-form.module').then(m => m.ProdukFormPageModule)
+    path: 'profil',
+    loadChildren: () => import('./profil/profil.module').then(m => m.ProfilPageModule)
   },
   {
-    path: 'produk',
-    loadChildren: () => import('./produk/produk.module').then(m => m.ProdukPageModule)
+    path: 'pengaturan',
+    loadChildren: () => import('./pengaturan/pengaturan.module').then(m => m.PengaturanPageModule)
+  },
+  {
+    path: 'tentang',
+    loadChildren: () => import('./tentang/tentang.module').then(m => m.TentangPageModule)
   },
   {
     path: 'produk-detail/:id',
@@ -37,13 +41,17 @@ const routes: Routes = [
   },
   {
     path: 'keranjang',
-    loadChildren: () => import('./keranjang/keranjang.module').then(m => m.KeranjangPageModule)
+    loadChildren: () => import('./keranjang/keranjang.module').then( m => m.KeranjangPageModule)
   },
-  { path: 'transaksi', loadChildren: () => import('./transaksi/transaksi.module').then(m => m.TransaksiPageModule) },
-  { path: 'profil', loadChildren: () => import('./profil/profil.module').then(m => m.ProfilPageModule) },
-  { path: 'pengaturan', loadChildren: () => import('./pengaturan/pengaturan.module').then(m => m.PengaturanPageModule) },
-  { path: 'tentang', loadChildren: () => import('./tentang/tentang.module').then(m => m.TentangPageModule) }
-
+  {
+    path: 'tabs',
+    children: [
+      { path: 'dashboard', loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardPageModule) },
+      { path: 'produk', loadChildren: () => import('./produk/produk.module').then(m => m.ProdukPageModule) },
+      { path: 'transaksi', loadChildren: () => import('./transaksi/transaksi.module').then(m => m.TransaksiPageModule) },
+      { path: 'profil', loadChildren: () => import('./profil/profil.module').then(m => m.ProfilPageModule) },
+    ]
+  }
 ];
 
 @NgModule({

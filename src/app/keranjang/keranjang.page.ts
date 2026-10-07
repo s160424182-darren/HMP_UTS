@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CartService, CartItem } from '../services/cart.service';
+import { CartService } from '../services/cart.service';
 import { TransactionService } from '../services/transaction.service';
-import { ProductService } from '../services/product.service';
 import { Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-keranjang',
@@ -12,18 +10,19 @@ import { ToastController } from '@ionic/angular';
   standalone: false,
 })
 export class KeranjangPage implements OnInit {
+  isAlertOpen = false;
+  alertMessage = '';
+
   constructor(
     private cartService: CartService,
     private transactionService: TransactionService,
-    private productService: ProductService,
-    private router: Router,
-    private toastController: ToastController
+    private router: Router
   ) { }
 
   ngOnInit() {
   }
 
-  get cartItems(): CartItem[] {
+  get cartItems(): any[] {
     return this.cartService.getCart();
   }
 
@@ -32,46 +31,39 @@ export class KeranjangPage implements OnInit {
   }
 
   removeItem(index: number) {
-    this.cartItems.splice(index, 1);
+    this.cartService.removeItem(index);
   }
 
-  async checkout() {
+  checkout() {
     if (this.cartItems.length > 0) {
-      // Check stock
       let canCheckout = true;
-      for (const item of this.cartItems) {
-        if (item.product.stock < item.quantity) {
+      for (let i in this.cartItems) {
+        if (this.cartItems[i].product.stock < this.cartItems[i].quantity) {
           canCheckout = false;
-          break;
         }
       }
 
-      if (!canCheckout) {
-        const toast = await this.toastController.create({
-          message: 'Stok tidak mencukupi',
-          duration: 2000,
-          color: 'danger'
-        });
-        toast.present();
-        return;
+      if (canCheckout === false) {
+        this.alertMessage = 'Stok tidak mencukupi';
+        this.isAlertOpen = true;
+      } else {
+        for (let i in this.cartItems) {
+          this.cartItems[i].product.stock -= this.cartItems[i].quantity;
+        }
+
+        this.transactionService.addTransaction(this.cartItems, this.total);
+        this.cartService.clearCart();
+        
+        this.alertMessage = 'Transaksi Berhasil';
+        this.isAlertOpen = true;
+        
       }
+    }
+  }
 
-      // Reduce stock
-      this.cartItems.forEach(item => {
-        item.product.stock -= item.quantity;
-      });
-      this.productService.saveProducts();
-
-      this.transactionService.addTransaction(this.cartItems, this.total);
-      this.cartService.clearCart();
-      
-      const toast = await this.toastController.create({
-        message: 'Transaksi Berhasil',
-        duration: 2000,
-        color: 'success'
-      });
-      toast.present();
-      
+  setOpen(isOpen: boolean) {
+    this.isAlertOpen = isOpen;
+    if(isOpen === false && this.alertMessage === 'Transaksi Berhasil'){
       this.router.navigate(['/transaksi']);
     }
   }

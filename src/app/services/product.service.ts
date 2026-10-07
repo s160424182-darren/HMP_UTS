@@ -1,22 +1,12 @@
 import { Injectable } from '@angular/core';
 
-export interface Product {
-  id: string;
-  name: string;
-  stock: number;
-  buyPrice: number;
-  sellPrice: number;
-  category: string;
-  image: string;
-}
-
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  private products: Product[] = [
+  products: any[] = [
     { id: '1', name: 'Sabun Mandi Lifebuoy', stock: 50, buyPrice: 2500, sellPrice: 3500, category: 'Mandi', image: 'https://ionicframework.com/docs/img/demos/thumbnail.svg' },
-    { id: '2', name: 'Shampo Clear', stock: 30, buyPrice: 15000, sellPrice: 18000, category: 'Mandi', image: '' }, // empty image for testing property binding
+    { id: '2', name: 'Shampo Clear', stock: 30, buyPrice: 15000, sellPrice: 18000, category: 'Mandi', image: '' },
     { id: '3', name: 'Indomie Goreng', stock: 100, buyPrice: 2500, sellPrice: 3000, category: 'Makanan', image: 'https://ionicframework.com/docs/img/demos/thumbnail.svg' },
     { id: '4', name: 'Beras Rojolele 5kg', stock: 20, buyPrice: 60000, sellPrice: 65000, category: 'Bahan Pokok', image: '' },
     { id: '5', name: 'Minyak Goreng Bimoli 2L', stock: 15, buyPrice: 35000, sellPrice: 38000, category: 'Bahan Pokok', image: 'https://ionicframework.com/docs/img/demos/thumbnail.svg' },
@@ -29,19 +19,20 @@ export class ProductService {
 
   constructor() {}
 
-  getProducts(): Product[] {
+  getProducts() {
     return this.products;
   }
 
-  getProductById(id: string): Product | undefined {
-    return this.products.find(p => p.id === id);
+  getProductById(id: string) {
+    for (let i in this.products) {
+      if (this.products[i].id === id) {
+        return this.products[i];
+      }
+    }
+    return undefined;
   }
 
-  addProduct(product: Product) {
+  addProduct(product: any) {
     this.products.push(product);
-  }
-
-  saveProducts() {
-    // Left empty since we rely purely on memory arrays now
   }
 }

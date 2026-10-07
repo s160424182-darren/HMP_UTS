@@ -5,7 +5,7 @@
     </ion-buttons>
     <ion-title>Produk</ion-title>
     <ion-buttons slot="end">
-      <ion-button routerLink="/keranjang">
+      <ion-button (click)="goToCart()">
         <ion-icon name="cart"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -15,28 +15,39 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-list>
-    <ion-item *ngFor="let p of filteredProducts; trackBy: trackById" (click)="goToDetail(p.id)" button>
-      <ion-thumbnail slot="start">
-        <img [src]="p.image ? p.image : 'https://ionicframework.com/docs/img/demos/thumbnail.svg'" alt="product image">
-      </ion-thumbnail>
-      <ion-label>
-        <h2>{{ p.name }}</h2>
-        <p>Stok: {{ p.stock }} | Harga: Rp{{ p.sellPrice }}</p>
-      </ion-label>
-      <ion-button slot="end" (click)="addToCart(p, $event)" [disabled]="p.stock === 0" color="secondary">
-        + Keranjang
-      </ion-button>
-    </ion-item>
-  </ion-list>
+<ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row *ngFor="let chunk of chunkedProducts">
+      <ion-col size="6" *ngFor="let p of chunk; trackBy: trackById">
+
+        <ion-card (click)="goToDetail(p.id)" button>
+          <img [src]="p.image ? p.image : 'https://ionicframework.com/docs/img/demos/thumbnail.svg'" alt="product image"
+            style="height: 120px; object-fit: cover;">
+
+          <ion-card-header>
+            <ion-card-title>{{ p.name }}</ion-card-title>
+            <ion-card-subtitle>Rp {{ p.sellPrice }}</ion-card-subtitle>
+          </ion-card-header>
+
+          <ion-card-content>
+            <p>Stok: {{ p.stock }}</p>
+            <ion-button expand="block" size="small" color="warning" (click)="addToCart(p, $event)"
+              [disabled]="p.stock === 0">
+              + Keranjang
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="goToAdd()" color="secondary">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-  <ion-alert [isOpen]="showAlert" header="Keranjang" [message]="alertMessage" [buttons]="alertButtons"
-    (didDismiss)="showAlert = false">
-  </ion-alert>
+
+  <ion-alert [isOpen]="isAlertOpen" header="Informasi" [message]="alertMessage" [buttons]="['OK']"
+    (didDismiss)="setOpen(false)"></ion-alert>
 </ion-content>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DoCheck } from '@angular/core';
 import { ProductService } from '../services/product.service';
 import { TransactionService } from '../services/transaction.service';
 
@@ -8,7 +8,11 @@ import { TransactionService } from '../services/transaction.service';
   styleUrls: ['./dashboard.page.scss'],
   standalone: false,
 })
-export class DashboardPage implements OnInit {
+export class DashboardPage implements OnInit, DoCheck {
+  totalProducts: number = 0;
+  totalTransactionsToday: number = 0;
+  bestSellerName: string = 'Belum ada data';
+
   constructor(
     private productService: ProductService,
     private transactionService: TransactionService
@@ -17,43 +21,61 @@ export class DashboardPage implements OnInit {
   ngOnInit() {
   }
 
-  get totalProducts(): number {
-    return this.productService.getProducts().length;
-  }
+  ngDoCheck() {
+    this.totalProducts = this.productService.getProducts().length;
 
-  get totalTransactionsToday(): number {
     const today = new Date();
-    return this.transactionService.getTransactions().filter(tx => 
-      tx.date.getDate() === today.getDate() && 
-      tx.date.getMonth() === today.getMonth() && 
-      tx.date.getFullYear() === today.getFullYear()
-    ).length;
-  }
-
-  get bestSellerName(): string {
-    const productCount: { [key: string]: number } = {};
-    this.transactionService.getTransactions().forEach(tx => {
-      tx.items.forEach(item => {
-        if (!productCount[item.product.id]) {
-          productCount[item.product.id] = 0;
-        }
-        productCount[item.product.id] += item.quantity;
-      });
-    });
+    let countToday = 0;
+    let transactions = this.transactionService.getTransactions();
+    
+    for (let i = 0; i < transactions.length; i++) {
+      let tx = transactions[i];
+      if (tx.date.getDate() === today.getDate() && 
+          tx.date.getMonth() === today.getMonth() && 
+          tx.date.getFullYear() === today.getFullYear()) {
+        countToday++;
+      }
+    }
+    this.totalTransactionsToday = countToday;
 
     let maxQty = 0;
     let bestId = null;
-    for (const [id, qty] of Object.entries(productCount)) {
-      if (qty > maxQty) {
-        maxQty = qty;
-        bestId = id;
+    let productIds: string[] = [];
+    let productQtys: number[] = [];
+
+    for (let i = 0; i < transactions.length; i++) {
+      let tx = transactions[i];
+      for (let j = 0; j < tx.items.length; j++) {
+        let item = tx.items[j];
+        
+        let foundIndex = -1;
+        for (let k = 0; k < productIds.length; k++) {
+          if (productIds[k] === item.product.id) {
+            foundIndex = k;
+          }
+        }
+
+        if (foundIndex > -1) {
+          productQtys[foundIndex] += item.quantity;
+        } else {
+          productIds.push(item.product.id);
+          productQtys.push(item.quantity);
+        }
       }
     }
 
-    if (bestId) {
-      const bestProduct = this.productService.getProductById(bestId);
-      return bestProduct ? bestProduct.name : '-';
+    for (let i = 0; i < productIds.length; i++) {
+      if (productQtys[i] > maxQty) {
+        maxQty = productQtys[i];
+        bestId = productIds[i];
+      }
     }
-    return 'Belum ada data';
+
+    if (bestId !== null) {
+      const bestProduct = this.productService.getProductById(bestId);
+      this.bestSellerName = bestProduct ? bestProduct.name : '-';
+    } else {
+      this.bestSellerName = 'Belum ada data';
+    }
   }
 }

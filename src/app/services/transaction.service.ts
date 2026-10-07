@@ -1,32 +1,42 @@
 import { Injectable } from '@angular/core';
-import { CartItem } from './cart.service';
-
-export interface Transaction {
-  id: string;
-  date: Date;
-  items: CartItem[];
-  total: number;
-}
 
 @Injectable({
   providedIn: 'root'
 })
 export class TransactionService {
-  private transactions: Transaction[] = [];
+  private transactions: any[] = [];
 
   constructor() {}
 
-  getTransactions(): Transaction[] {
+  getTransactions() {
     return this.transactions;
   }
 
-  addTransaction(items: CartItem[], total: number) {
-    const newTransaction: Transaction = {
+  addTransaction(items: any[], total: number) {
+    let copiedItems = [];
+    for (let i in items) {
+      copiedItems.push({
+        product: {
+          id: items[i].product.id,
+          name: items[i].product.name,
+          stock: items[i].product.stock,
+          buyPrice: items[i].product.buyPrice,
+          sellPrice: items[i].product.sellPrice,
+          category: items[i].product.category,
+          image: items[i].product.image
+        },
+        quantity: items[i].quantity
+      });
+    }
+
+    const newTransaction = {
       id: new Date().getTime().toString(),
       date: new Date(),
-      items: items.map(item => ({ ...item })), // deep copy
+      items: copiedItems,
       total: total
     };
-    this.transactions = [newTransaction, ...this.transactions];
+    
+    // As per user's request for "static arrays", use push instead of spreading
+    this.transactions.push(newTransaction);
   }
 }
