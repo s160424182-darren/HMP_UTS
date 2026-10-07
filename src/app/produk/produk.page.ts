@@ -23,6 +23,7 @@ export class ProdukPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.loadData();
   }
 
   ionViewDidEnter() {
@@ -44,18 +45,23 @@ export class ProdukPage implements OnInit {
     animation.play();
   }
 
-  get products(): any[] {
-    return this.productService.getProducts();
+  localProducts: any[] = [];
+  
+  ionViewWillEnter() {
+    this.loadData();
+  }
+
+  loadData() {
+    this.localProducts = this.productService.getProducts();
   }
 
   get filteredProducts() {
     if (this.searchQuery === '') {
-      return this.products;
+      return this.localProducts;
     }
-
     let result = [];
-    for (let i = 0; i < this.products.length; i++) {
-      let p = this.products[i];
+    for (let i = 0; i < this.localProducts.length; i++) {
+      let p = this.localProducts[i];
       if (p.name.toLowerCase().indexOf(this.searchQuery.toLowerCase()) > -1) {
         result.push(p);
       }

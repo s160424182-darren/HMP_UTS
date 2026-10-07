@@ -19,6 +19,7 @@ export class DashboardPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.loadData();
   }
 
     ionViewWillEnter() {

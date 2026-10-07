@@ -23,6 +23,15 @@ export class ProdukDetailPage implements OnInit {
       this.product = this.productService.getProductById(id);
     }
   }
+  ionViewWillEnter() {
+    this.loadData();
+  }
+  loadData() {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id !== null) {
+      this.product = this.productService.getProductById(id);
+    }
+  }
    goToEdit() {
     this.router.navigate(['/produk-form', this.product.id]);
   }
