@@ -17,14 +17,14 @@ export class DashboardPage implements OnInit {
   constructor(
     private productService: ProductService,
     private transactionService: TransactionService,
-     private animationCtrl: AnimationController
+    private animationCtrl: AnimationController
   ) { }
 
   ngOnInit() {
     this.loadData();
   }
 
-    ionViewWillEnter() {
+  ionViewWillEnter() {
     this.loadData();
   }
   ionViewDidEnter() {
@@ -33,15 +33,22 @@ export class DashboardPage implements OnInit {
 
   animateCards() {
     const cards = document.querySelectorAll('ion-card');
-    if (cards.length === 0) return;
+    const cardsArray: HTMLElement[] = [];
+    for (let i = 0; i < cards.length; i++) {
+      cardsArray.push(cards[i] as HTMLElement);
+    }
+
+    if (cardsArray.length === 0) return;
 
     const animation = this.animationCtrl
       .create()
-      .addElement(Array.from(cards))
+      .addElement(cardsArray)
       .duration(500)
       .iterations(1)
-      .fromTo('opacity', '0', '1')
-      .fromTo('transform', 'translateY(20px)', 'translateY(0)');
+      .keyframes([
+        { offset: 0, opacity: '0', transform: 'translateY(20px)' },
+        { offset: 1, opacity: '1', transform: 'translateY(0)' }
+      ]);
 
     animation.play();
   }
@@ -52,12 +59,12 @@ export class DashboardPage implements OnInit {
     const today = new Date();
     let countToday = 0;
     let transactions = this.transactionService.getTransactions();
-    
+
     for (let i = 0; i < transactions.length; i++) {
       let tx = transactions[i];
-      if (tx.date.getDate() === today.getDate() && 
-          tx.date.getMonth() === today.getMonth() && 
-          tx.date.getFullYear() === today.getFullYear()) {
+      if (tx.date.getDate() === today.getDate() &&
+        tx.date.getMonth() === today.getMonth() &&
+        tx.date.getFullYear() === today.getFullYear()) {
         countToday++;
       }
     }
@@ -72,7 +79,7 @@ export class DashboardPage implements OnInit {
       let tx = transactions[i];
       for (let j = 0; j < tx.items.length; j++) {
         let item = tx.items[j];
-        
+
         let foundIndex = -1;
         for (let k = 0; k < productIds.length; k++) {
           if (productIds[k] === item.product.id) {

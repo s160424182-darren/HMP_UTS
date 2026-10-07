@@ -32,21 +32,28 @@ export class ProdukPage implements OnInit {
 
   animateCards() {
     const cards = document.querySelectorAll('ion-card');
-    if (cards.length === 0) return;
+    const cardsArray: HTMLElement[] = [];
+    for (let i = 0; i < cards.length; i++) {
+      cardsArray.push(cards[i] as HTMLElement);
+    }
+
+    if (cardsArray.length === 0) return;
 
     const animation = this.animationCtrl
       .create()
-      .addElement(Array.from(cards))
+      .addElement(cardsArray)
       .duration(500)
       .iterations(1)
-      .fromTo('opacity', '0', '1')
-      .fromTo('transform', 'translateY(20px)', 'translateY(0)');
+      .keyframes([
+        { offset: 0, opacity: '0', transform: 'translateY(20px)' },
+        { offset: 1, opacity: '1', transform: 'translateY(0)' }
+      ]);
 
     animation.play();
   }
 
   localProducts: any[] = [];
-  
+
   ionViewWillEnter() {
     this.loadData();
   }
