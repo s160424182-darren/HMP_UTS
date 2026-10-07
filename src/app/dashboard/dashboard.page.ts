@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../services/product.service';
 import { TransactionService } from '../services/transaction.service';
+import { AnimationController } from '@ionic/angular';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,7 +16,8 @@ export class DashboardPage implements OnInit {
 
   constructor(
     private productService: ProductService,
-    private transactionService: TransactionService
+    private transactionService: TransactionService,
+     private animationCtrl: AnimationController
   ) { }
 
   ngOnInit() {
@@ -24,6 +26,24 @@ export class DashboardPage implements OnInit {
 
     ionViewWillEnter() {
     this.loadData();
+  }
+  ionViewDidEnter() {
+    this.animateCards();
+  }
+
+  animateCards() {
+    const cards = document.querySelectorAll('ion-card');
+    if (cards.length === 0) return;
+
+    const animation = this.animationCtrl
+      .create()
+      .addElement(Array.from(cards))
+      .duration(500)
+      .iterations(1)
+      .fromTo('opacity', '0', '1')
+      .fromTo('transform', 'translateY(20px)', 'translateY(0)');
+
+    animation.play();
   }
 
   loadData() {
