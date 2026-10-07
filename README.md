@@ -17,7 +17,7 @@ Pastikan telah menginstall [Node.js](https://nodejs.org/) dan [Ionic CLI](https:
 ## 🏃‍♂️ Cara Menjalankan Aplikasi
 
 Setelah proses instalasi selesai, Anda dapat menjalankan aplikasi secara lokal di browser dengan perintah berikut:
-  .```bash
+1.  ```bash
     ionic serve
 
 ## ✨ Daftar Fitur yang Berhasil Diimplementasikan
