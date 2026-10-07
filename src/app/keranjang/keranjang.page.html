@@ -20,7 +20,21 @@
           <h2>{{ item.product.name }}</h2>
           <p>{{ item.quantity }} x Rp{{ item.product.sellPrice }}</p>
         </ion-label>
-        <ion-note slot="end">Rp{{ item.quantity * item.product.sellPrice }}</ion-note>
+                <div slot="end" class="ion-text-right">
+          <ion-note>Rp{{ item.quantity * item.product.sellPrice }}</ion-note>     
+          <br>
+          <ion-buttons>
+            <ion-button color="danger" (click)="decrease(i)">
+              <ion-icon name="remove-circle-outline"></ion-icon>
+            </ion-button>    
+            <ion-note color="dark" style="margin: 0 5px; font-weight: bold;">
+              {{ item.quantity }}
+            </ion-note>
+            <ion-button color="success" (click)="increase(i)">
+              <ion-icon name="add-circle-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </div>
       </ion-item>
 
       <ion-item-options side="end">

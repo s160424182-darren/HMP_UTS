@@ -1,4 +1,4 @@
-import { Component, OnInit, DoCheck } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../services/product.service';
 import { TransactionService } from '../services/transaction.service';
 
@@ -8,7 +8,7 @@ import { TransactionService } from '../services/transaction.service';
   styleUrls: ['./dashboard.page.scss'],
   standalone: false,
 })
-export class DashboardPage implements OnInit, DoCheck {
+export class DashboardPage implements OnInit {
   totalProducts: number = 0;
   totalTransactionsToday: number = 0;
   bestSellerName: string = 'Belum ada data';
@@ -21,7 +21,11 @@ export class DashboardPage implements OnInit, DoCheck {
   ngOnInit() {
   }
 
-  ngDoCheck() {
+    ionViewWillEnter() {
+    this.loadData();
+  }
+
+  loadData() {
     this.totalProducts = this.productService.getProducts().length;
 
     const today = new Date();

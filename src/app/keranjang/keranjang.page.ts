@@ -33,6 +33,22 @@ export class KeranjangPage implements OnInit {
   removeItem(index: number) {
     this.cartService.removeItem(index);
   }
+    increase(index: number) {
+    if (this.cartItems[index].quantity < this.cartItems[index].product.stock) {
+      this.cartItems[index].quantity += 1;
+    } else {
+      this.alertMessage = 'Stok produk tidak mencukupi';
+      this.isAlertOpen = true;
+    }
+  }
+
+  decrease(index: number) {
+    if (this.cartItems[index].quantity > 1) {
+      this.cartItems[index].quantity -= 1;
+    } else {
+      this.removeItem(index);
+    }
+  }
 
   checkout() {
     if (this.cartItems.length > 0) {
