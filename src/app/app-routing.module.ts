@@ -40,6 +40,10 @@ const routes: Routes = [
     loadChildren: () => import('./produk-form/produk-form.module').then(m => m.ProdukFormPageModule)
   },
   {
+    path: 'produk-form/:id',
+    loadChildren: () => import('./produk-form/produk-form.module').then(m => m.ProdukFormPageModule)
+  },
+  {
     path: 'keranjang',
     loadChildren: () => import('./keranjang/keranjang.module').then( m => m.KeranjangPageModule)
   },

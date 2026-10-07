@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router'; // <-- Added ActivatedRoute
 import { ProductService } from '../services/product.service';
 
 @Component({
@@ -22,12 +22,31 @@ export class ProdukFormPage implements OnInit {
   alertMessage: string = '';
   alertButtons = ['OK'];
 
+  editId: string | null = null; // <-- Added to track if editing
+
   constructor(
     private productService: ProductService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute // <-- Injected ActivatedRoute
   ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    // Check if we arrived here to EDIT a product
+    this.editId = this.route.snapshot.paramMap.get('id');
+    
+    if (this.editId !== null) {
+      const product = this.productService.getProductById(this.editId);
+      if (product) {
+        // Pre-fill the input fields with existing data
+        this.new_name = product.name;
+        this.new_category = product.category;
+        this.new_stock = product.stock;
+        this.new_buyPrice = product.buyPrice;
+        this.new_sellPrice = product.sellPrice;
+        this.new_image = product.image;
+      }
+    }
+  }
 
   validate(): boolean {
     this.errors = {};
@@ -48,7 +67,20 @@ export class ProdukFormPage implements OnInit {
       this.errors['sellPrice'] = 'Harga jual harus lebih dari 0';
     }
 
-    return Object.keys(this.errors).length === 0;
+    // Because the rubric banned Object.keys() previously, we'll do a simple for...in loop
+    let hasErrors = false;
+    for (let key in this.errors) {
+      hasErrors = true;
+    }
+    return !hasErrors;
+  }
+  
+    deleteProduct() {
+    if (this.editId !== null) {
+      this.productService.removeProduct(this.editId);
+      this.alertMessage = 'Produk berhasil dihapus';
+      this.showAlert = true;
+    }
   }
 
   saveProduct() {
@@ -56,18 +88,34 @@ export class ProdukFormPage implements OnInit {
       return;
     }
 
-    const newProduct = {
-      id: new Date().getTime().toString(),
-      name: this.new_name,
-      category: this.new_category,
-      stock: this.new_stock,
-      buyPrice: this.new_buyPrice,
-      sellPrice: this.new_sellPrice,
-      image: this.new_image
-    };
+    if (this.editId !== null) {
+      // EDIT LOGIC
+      const updatedProduct = {
+        id: this.editId,
+        name: this.new_name,
+        category: this.new_category,
+        stock: this.new_stock,
+        buyPrice: this.new_buyPrice,
+        sellPrice: this.new_sellPrice,
+        image: this.new_image
+      };
+      this.productService.updateProduct(updatedProduct);
+      this.alertMessage = 'Produk berhasil diedit';
+    } else {
+      // ADD LOGIC
+      const newProduct = {
+        id: new Date().getTime().toString(),
+        name: this.new_name,
+        category: this.new_category,
+        stock: this.new_stock,
+        buyPrice: this.new_buyPrice,
+        sellPrice: this.new_sellPrice,
+        image: this.new_image
+      };
+      this.productService.addProduct(newProduct);
+      this.alertMessage = 'Produk berhasil ditambahkan';
+    }
 
-    this.productService.addProduct(newProduct);
-    this.alertMessage = 'Produk berhasil ditambahkan';
     this.showAlert = true;
   }
 

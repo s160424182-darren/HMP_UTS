@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {ProductService } from '../services/product.service';
 
 @Component({
@@ -13,7 +13,8 @@ export class ProdukDetailPage implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private productService: ProductService
+    private productService: ProductService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -21,5 +22,8 @@ export class ProdukDetailPage implements OnInit {
     if (id) {
       this.product = this.productService.getProductById(id);
     }
+  }
+   goToEdit() {
+    this.router.navigate(['/produk-form', this.product.id]);
   }
 }

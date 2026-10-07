@@ -35,4 +35,21 @@ export class ProductService {
   addProduct(product: any) {
     this.products.push(product);
   }
+
+  updateProduct(updatedProduct: any) {
+    for (let i = 0; i < this.products.length; i++) {
+      if (this.products[i].id === updatedProduct.id) {
+        this.products[i] = updatedProduct;
+      }
+    }
+  }
+    removeProduct(id: string) {
+    let newProducts = [];
+    for (let i = 0; i < this.products.length; i++) {
+      if (this.products[i].id !== id) {
+        newProducts.push(this.products[i]);
+      }
+    }
+    this.products = newProducts;
+  }
 }

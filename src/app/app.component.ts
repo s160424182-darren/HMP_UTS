@@ -13,8 +13,4 @@ export class AppComponent {
   navigate(path: string) {
     this.router.navigate([path]);
   }
-
-  logout() {
-    console.log('Logged out');
-  }
 }

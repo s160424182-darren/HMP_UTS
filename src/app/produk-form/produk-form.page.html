@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/tabs/produk"></ion-back-button>
     </ion-buttons>
-    <ion-title>Tambah Produk</ion-title>
+    <ion-title>{{ editId ? 'Edit Produk' : 'Tambah Produk' }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -69,7 +69,10 @@
   <ion-button expand="block" color="warning" class="ion-margin-top" (click)="saveProduct()">
     SIMPAN PRODUK
   </ion-button>
-
+  
+<ion-button *ngIf="editId" expand="block" color="danger" class="ion-margin-top" (click)="deleteProduct()">
+    HAPUS PRODUK
+  </ion-button>
   <ion-alert [isOpen]="showAlert" header="Sukses" [message]="alertMessage" [buttons]="alertButtons"
     (didDismiss)="onAlertDismiss()">
   </ion-alert>
