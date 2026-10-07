@@ -17,7 +17,7 @@ export class ProductService {
     { id: '10', name: 'Pasta Gigi Pepsodent', stock: 35, buyPrice: 8000, sellPrice: 10000, category: 'Mandi', image: '' }
   ];
 
-  constructor() {}
+  constructor() { }
 
   getProducts() {
     return this.products;
@@ -43,7 +43,8 @@ export class ProductService {
       }
     }
   }
-    removeProduct(id: string) {
+  
+  removeProduct(id: string) {
     let newProducts = [];
     for (let i = 0; i < this.products.length; i++) {
       if (this.products[i].id !== id) {

@@ -1,9 +1,11 @@
 <ion-header>
   <ion-toolbar color="primary">
+    
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Produk</ion-title>
+    
     <ion-buttons slot="end">
       <ion-button (click)="goToCart()">
         <ion-icon name="cart"></ion-icon>
@@ -12,10 +14,13 @@
         <ion-icon name="refresh"></ion-icon>
       </ion-button>
     </ion-buttons>
+
   </ion-toolbar>
+
   <ion-toolbar color="primary">
     <ion-searchbar [(ngModel)]="searchQuery" placeholder="Cari produk..."></ion-searchbar>
   </ion-toolbar>
+  
 </ion-header>
 
 <ion-content [fullscreen]="true">

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router'; // <-- Added ActivatedRoute
+import { Router, ActivatedRoute } from '@angular/router';
 import { ProductService } from '../services/product.service';
 
 @Component({
@@ -22,22 +22,20 @@ export class ProdukFormPage implements OnInit {
   alertMessage: string = '';
   alertButtons = ['OK'];
 
-  editId: string | null = null; // <-- Added to track if editing
+  editId: string | null = null;
 
   constructor(
     private productService: ProductService,
     private router: Router,
-    private route: ActivatedRoute // <-- Injected ActivatedRoute
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
-    // Check if we arrived here to EDIT a product
     this.editId = this.route.snapshot.paramMap.get('id');
     
     if (this.editId !== null) {
       const product = this.productService.getProductById(this.editId);
       if (product) {
-        // Pre-fill the input fields with existing data
         this.new_name = product.name;
         this.new_category = product.category;
         this.new_stock = product.stock;
@@ -66,8 +64,6 @@ export class ProdukFormPage implements OnInit {
     if (!this.new_sellPrice || this.new_sellPrice <= 0) {
       this.errors['sellPrice'] = 'Harga jual harus lebih dari 0';
     }
-
-    // Because the rubric banned Object.keys() previously, we'll do a simple for...in loop
     let hasErrors = false;
     for (let key in this.errors) {
       hasErrors = true;
@@ -89,7 +85,6 @@ export class ProdukFormPage implements OnInit {
     }
 
     if (this.editId !== null) {
-      // EDIT LOGIC
       const updatedProduct = {
         id: this.editId,
         name: this.new_name,
@@ -102,7 +97,6 @@ export class ProdukFormPage implements OnInit {
       this.productService.updateProduct(updatedProduct);
       this.alertMessage = 'Produk berhasil diedit';
     } else {
-      // ADD LOGIC
       const newProduct = {
         id: new Date().getTime().toString(),
         name: this.new_name,
