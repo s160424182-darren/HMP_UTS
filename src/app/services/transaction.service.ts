@@ -36,7 +36,6 @@ export class TransactionService {
       total: total
     };
     
-    // As per user's request for "static arrays", use push instead of spreading
     this.transactions.push(newTransaction);
   }
 }
